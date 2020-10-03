@@ -24,24 +24,20 @@ class DayTwo
         10, 139, 0, 99, 2, 0, 14, 0
     ];
 
-    public function partOne(): void
+    public function partOne(): array
     {
-        $input = $this->opCode[0];
-        $inputA = $this->opCode[2];
-        $inputB = $this->opCode[2];
-        $outPut = $this->opCode[3];
-
         for ($i = 0, $length = count($this->opCode); $i < $length; $i += 4) {
-            if ($this->opCode[$input[$i]] === 99) {
+            if ($this->opCode[$i] === 99) {
                 break;
             }
-            if ($this->opCode[$input[$i]] === 1) {
-                $outPut[$input[$i + 3]] = $inputA[$i + 1] + $inputB[$i + 2];
-            } elseif ($this->opCode[$input[$i]] === 2) {
-                $outPut[$input[$i + 3]] = $inputA[$i + 1] * $inputB[$i + 2];
+            if ($this->opCode[$i] === 1) {
+                $this->opCode[$this->opCode[$i + 3]] = $this->opCode[$this->opCode[$i + 1]] + $this->opCode[$this->opCode[$i + 2]];
+            } elseif ($this->opCode[$i] === 2) {
+                $this->opCode[$this->opCode[$i + 3]] = $this->opCode[$this->opCode[$i + 1]] * $this->opCode[$this->opCode[$i + 2]];
             }
-            print_r($outPut[0]);
         }
+        var_dump($this->opCode);
+        return $this->opCode;
     }
 }
 
