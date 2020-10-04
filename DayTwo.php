@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-
 class DayTwo
 {
     private array $opCode = [
-        1, 12, 2, 3, 1, 1, 2, 3, 1, 3, 4,
+        1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4,
         3, 1, 5, 0, 3, 2, 10, 1, 19, 1,
         5, 19, 23, 1, 23, 5, 27, 1, 27,
         13, 31, 1, 31, 5, 35, 1, 9, 35,
@@ -24,22 +23,47 @@ class DayTwo
         10, 139, 0, 99, 2, 0, 14, 0
     ];
 
-    public function partOne(): array
+    public function getOpCode(): array
     {
-        for ($i = 0, $length = count($this->opCode); $i < $length; $i += 4) {
-            if ($this->opCode[$i] === 99) {
+        return $this->opCode;
+    }
+
+    //part one
+    public function partOne(array $opCode, int $noun, int $verb): array
+    {
+        $opCode[1] = $noun;
+        $opCode[2] = $verb;
+
+        for ($i = 0, $length = count($opCode); $i < $length; $i += 4) {
+            if ($opCode[$i] === 99) {
                 break;
             }
-            if ($this->opCode[$i] === 1) {
-                $this->opCode[$this->opCode[$i + 3]] = $this->opCode[$this->opCode[$i + 1]] + $this->opCode[$this->opCode[$i + 2]];
-            } elseif ($this->opCode[$i] === 2) {
-                $this->opCode[$this->opCode[$i + 3]] = $this->opCode[$this->opCode[$i + 1]] * $this->opCode[$this->opCode[$i + 2]];
+            if ($opCode[$i] === 1) {
+                $opCode[$opCode[$i + 3]] = $opCode[$opCode[$i + 1]] + $opCode[$opCode[$i + 2]];
+            } elseif ($opCode[$i] === 2) {
+                $opCode[$opCode[$i + 3]] = $opCode[$opCode[$i + 1]] * $opCode[$opCode[$i + 2]];
             }
         }
-        var_dump($this->opCode);
-        return $this->opCode;
+        var_dump($opCode[0]);
+        return $opCode;
+    }
+
+    //part two
+    public function partTwo(): array
+    {
+        for ($i = 0; $i < 100; $i++) {
+            for ($j = 0; $j < 100; $j++) {
+                $outPut = $this->partOne($this->getOpCode(), $i, $j);
+                if ($outPut[0] === 19690720) {
+                    var_dump([$i, $j]);
+                    return [$i, $j];
+                }
+            }
+        }
     }
 }
 
-$solution = new DayTwo();
-$solution->partOne();
+
+$solution = new DayTwo;
+$solution->partOne($solution->getOpCode(), 12, 2);
+$solution->partTwo();
